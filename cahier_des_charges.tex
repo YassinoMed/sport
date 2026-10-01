@@ -1,0 +1,409 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{array}
+\usepackage{color}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{longtable}
+
+\geometry{hmargin=2.5cm,vmargin=2.5cm}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=cyan, pdftitle={Cahier des Charges Technique - Plateforme de Gestion de Club Sportif}}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\textbf{Plateforme ERP Club Sportif}}
+\lhead{Cahier des Charges Technique}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        \Huge \textbf{CAHIER DES CHARGES TECHNIQUE}
+        \vspace{0.5cm}
+        \LARGE Plateforme Intégrale de Gestion de Club Sportif (ERP)
+        \vspace{1.5cm}
+        \textbf{Version 2.5 (Complète)}
+        \vspace{2cm}
+        \large \textbf{Date :} \today
+        \vspace{4cm}
+        \textbf{Stack :} \\
+        Laravel 10+ (\textit{Backend}) $\cdot$ MySQL $\cdot$ Blade $\cdot$ Bootstrap 5 / AdminLTE $\cdot$ PWA $\cdot$ Stripe API $\cdot$ Sanctum $\cdot$ RBAC (Spatie Permissions)
+        \vspace*{\fill}
+    \end{center}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduction et périmètre}
+Cette application est une solution ERP web dédiée à la gestion multi-sites d'un réseau de clubs sportifs. Elle centralise la gestion structurelle (Ville $\rightarrow$ Salle $\rightarrow$ Groupe), la gestion des membres et du staff, les présences, la planification, la vie sportive (grades, événements, tests), ainsi que la finance (paiements, dépenses, reporting). Elle propose une interface bilingue (FR/AR) et une API pour les utilisateurs (\textit{mobile}).
+
+\section{Acteurs, rôles et droits (RBAC)}
+\subsection{Rôles principaux}
+\begin{itemize}
+    \item \textbf{Admin :} accès total (paramétrage, rôles, audit, finance, exports).
+    \item \textbf{CityManager :} gestion des entités et personnes de sa ville (salles, managers, staff, membres).
+    \item \textbf{GymManager :} gestion opérationnelle de sa salle (membres, sessions, cours, finance locale).
+    \item \textbf{Coach :} accès pédagogique et opérationnel (cours/sessions, présences, suivi sportif).
+    \item \textbf{User :} accès via API (authentification, profil, sessions, participation, présence).
+\end{itemize}
+
+\subsection{Gestion des rôles et permissions}
+\begin{itemize}
+    \item Création / modification / suppression de rôles.
+    \item Clonage de rôles.
+    \item Gestion des permissions (création / suppression).
+    \item Liste des utilisateurs par rôle.
+\end{itemize}
+
+\section{Fonctionnalités transverses}
+\subsection{Authentification et compte}
+\begin{itemize}
+    \item Connexion / déconnexion (web).
+    \item Protection contre la force brute (\textit{rate limiting} du login).
+    \item Réinitialisation de mot de passe (demande de lien, reset via token).
+    \item Vérification d'email (web et API).
+    \item Authentification API (Sanctum) avec jetons par appareil.
+\end{itemize}
+
+\subsection{Internationalisation et UI}
+\begin{itemize}
+    \item Bilinguisme FR/AR (bascule LTR/RTL).
+    \item Mode sombre (préférences persistées).
+    \item Recherche globale (\textit{Spotlight}) avec suggestions contextualisées selon le rôle.
+    \item Interface responsive (mobile / tablette / desktop).
+    \item Application installable (PWA : manifest + service worker + cache offline basique).
+    \item Listes performantes côté serveur (\textit{DataTables}).
+\end{itemize}
+
+\subsection{Notifications et communication}
+\begin{itemize}
+    \item Notification email de bienvenue (asynchrone / queue).
+    \item Notification email aux utilisateurs inactifs (commande planifiée).
+    \item Emails système : vérification d'email, réinitialisation de mot de passe.
+    \item Rappels de paiement par SMS (commande planifiée), avec mode \texttt{--dry-run} et délai \texttt{--days}.
+    \item Fournisseur SMS configurable (multi-providers : Twilio / Orange) via une fabrique.
+\end{itemize}
+
+\subsection{Sécurité, conformité et audit}
+\begin{itemize}
+    \item Déconnexion forcée des utilisateurs bannis (\textit{logs-out-banned-user}).
+    \item Détection et blocage des requêtes suspectes (\textit{honeypot}, outils d'attaque, patterns SQLi/XSS, scans automatisés).
+    \item Nettoyage/sanitation des entrées (prévention XSS : \texttt{strip\_tags} récursif) et en-têtes de sécurité.
+    \item Protection CSRF sur les routes web.
+    \item En-têtes HTTP durcis : CSP, anti-clickjacking, anti-sniffing, Referrer-Policy, Permissions-Policy.
+    \item Blocage automatique d'IP en cas de volume anormal ou scans (trop de requêtes / trop de 404), avec durée de blocage temporaire.
+    \item Journalisation des actions (logs d'activité) : utilisateur, URL, méthode, IP, user-agent, payload filtré (sans mots de passe).
+    \item Stockage privé des documents sensibles et téléchargements contrôlés.
+\end{itemize}
+
+\subsection{Documents, exports et reporting avancé}
+\begin{itemize}
+    \item Export PDF des feuilles de présence d'événements, avec support de l'arabe (mise en forme des glyphes).
+    \item Génération de facture PDF pour les paiements (\textit{invoice}), avec numéro de facture unique lors du passage à \texttt{paid}.
+    \item Exports de reporting en PDF et Excel, avec filtres multi-critères et sections activables/désactivables à l'export.
+    \item Optimisations de performance sur les tableaux de bord : mise en cache des listes de référence et agrégats de rapports.
+\end{itemize}
+
+\section{Modules fonctionnels (liste exhaustive)}
+\subsection{A. Gestion structurelle multi-sites}
+\begin{itemize}
+    \item \textbf{Villes (Cities) :} création, consultation, modification, suppression, restauration d'éléments supprimés.
+    \item \textbf{Salles (Gyms) :} création, consultation, modification, suppression, rattachement à une ville.
+    \item \textbf{Groupes :} création, modification, suppression, affectation de membres, action d'affectation en masse.
+    \item \textbf{Catégories :} liste, création, modification, suppression, initialisation des catégories par \textit{seed}.
+\end{itemize}
+
+\subsection{B. Gestion des utilisateurs et membres}
+\begin{itemize}
+    \item \textbf{Annuaire (AllUsers) :} liste, recherche, création, consultation, modification, suppression.
+    \item \textbf{Détails membre :} fiche complète (données personnelles, rattachements, informations sportives).
+    \item \textbf{Affectation :} rattachement à une salle, affectation à un groupe.
+    \item \textbf{Statut stage :} consultation et mise à jour du statut.
+    \item \textbf{Documents :} ajout, suppression, téléchargement (documents membre).
+    \item \textbf{Bannissement :} bannir, débannir, consulter la liste des utilisateurs bannis.
+    \item \textbf{Rapport membre :} génération d'un rapport synthétique par membre.
+\end{itemize}
+
+\subsection{C. Gestion du staff et des managers}
+\begin{itemize}
+    \item \textbf{City Managers :} création, consultation, modification, suppression.
+    \item \textbf{Gym Managers :} création, consultation, modification, suppression.
+    \item \textbf{Coachs :} création, consultation, modification, suppression, fiche coach, rapport coach.
+    \item \textbf{Staff :} création, consultation, modification, suppression (rôles hors \texttt{user}).
+    \item \textbf{Modérateurs :} création, consultation, modification, suppression (avec contrôles RBAC).
+\end{itemize}
+
+\subsection{D. Planification, cours et séances}
+\begin{itemize}
+    \item \textbf{Cours :} liste, création, consultation, modification, suppression (version FR \texttt{/cours} et EN \texttt{/courses}).
+    \item \textbf{Emplois du temps :} liste, création, modification, suppression (\texttt{Schedule}).
+    \item \textbf{Séances d'entraînement :} liste, création, planification, consultation, modification, suppression (\texttt{TrainingSession}).
+    \item \textbf{Packs d'entraînement :} liste, création, consultation, modification, suppression (\texttt{TrainingPackage}).
+\end{itemize}
+
+\subsection{E. Présences et assiduité}
+\begin{itemize}
+    \item \textbf{Présence (par séance) :} marquage, enregistrement, mise à jour AJAX, historique.
+    \item \textbf{Présence par cours :} liste par cours, création, enregistrement, mise à jour AJAX, consultation par date, édition, suppression, statistiques.
+    \item \textbf{Présence par catégorie :} création, enregistrement, mise à jour AJAX, consultation par date, édition, suppression, statistiques.
+    \item \textbf{Présence coach :} saisie liée à un coach (route dédiée).
+\end{itemize}
+
+\subsection{F. Vie sportive : grades, notes, tests, combats, événements}
+\begin{itemize}
+    \item \textbf{Ceintures (Belts) :} liste, création, consultation, modification, suppression.
+    \item \textbf{Passages de grades :} interface de grading, enregistrement des obtentions.
+    \item \textbf{Notes de grade :} gestion des catégories, sous-catégories, items/notes (création/suppression).
+    \item \textbf{Tests athlétiques :} gestion des tests (CRUD), insertion de valeurs par membre, rapport par membre, initialisation des tests par \textit{seed}.
+    \item \textbf{Combats :} création d'oppositions, historique des combats.
+    \item \textbf{Événements :} liste, détails, création, export PDF (feuille de présence), inscription d'un membre, gestion des inscriptions et marquage payé.
+    \item \textbf{Participations :} liste, création, consultation, modification, suppression, gestion de \textit{waitlist}.
+\end{itemize}
+
+\subsection{G. Finance : paiements, dépenses, reporting}
+\begin{itemize}
+    \item \textbf{Stripe (achat de pack) :} écran de paiement, soumission, historique des achats.
+    \item \textbf{Paiements par membre :} liste, création, modification, suppression, génération et téléchargement de facture PDF (\textit{invoice}) pour les paiements \texttt{paid}.
+    \item \textbf{Dépenses :} liste, création, modification, suppression, rapport par coach.
+    \item \textbf{Catégories de dépenses :} CRUD catégories.
+    \item \textbf{Sous-catégories de dépenses :} CRUD sous-catégories.
+    \item \textbf{Rapports :} tableau de bord, filtres (mois, ville, salle, coach, cours, statuts, montants), exports PDF/Excel.
+    \item \textbf{Revenus :} ventilation par source (packs, inscriptions événements, examens de ceinture).
+    \item \textbf{Synthèse :} total membres, actifs/bannis, volumes salles/cours/événements, top coachs, top salles.
+\end{itemize}
+
+\subsection{H. Administration et paramétrage}
+\begin{itemize}
+    \item \textbf{Accueil (welcome) :} page d'entrée staff avec raccourcis et accès rapide.
+    \item \textbf{Paramètres globaux :} consultation et mise à jour.
+    \item \textbf{Logs d'activité :} liste et consultation détaillée d'entrées.
+    \item \textbf{Pages système :} page vide/maintenance et page non autorisée (\texttt{/unAuth}).
+    \item \textbf{Profil admin :} consultation et modification du profil (routes dédiées).
+\end{itemize}
+
+\section{API (mobile / intégrations)}
+\subsection{Authentification et compte}
+\begin{itemize}
+    \item \textbf{Auth :} \texttt{POST /api/signin}, \texttt{POST /api/signup}, \texttt{GET /api/logout}.
+    \item \textbf{Profil :} \texttt{POST /api/update\_profile}.
+    \item \textbf{Email :} renvoi de notification de vérification et vérification via lien.
+    \item \textbf{Jetons :} \texttt{POST /api/sanctum/token}.
+\end{itemize}
+
+\subsection{Séances, packs, cours, participations, présences}
+\begin{itemize}
+    \item \textbf{Séances :} listing, détails, sessions restantes, présence à une session (\texttt{attendSession}).
+    \item \textbf{Packs :} listing et détails.
+    \item \textbf{CRUD :} \texttt{courses}, \texttt{participations}, \texttt{attendances} via ressources REST.
+    \item \textbf{Filtrage :} participations par utilisateur et par cours.
+\end{itemize}
+
+\section{Automatisation et maintenance}
+\begin{itemize}
+    \item Commande \texttt{create:admin} : création d'un compte admin via CLI.
+    \item Commande \texttt{notify:users-not-logged-in-for-month} : notification des utilisateurs inactifs.
+    \item Commande \texttt{payments:remind} : rappels SMS sur paiements à échéance (options \texttt{--days} et \texttt{--dry-run}).
+    \item Exécution planifiée (scheduler) pour l'automatisation des notifications.
+\end{itemize}
+
+\section{Tableau des fonctionnalités (description, complexité, prix)}
+Les montants ci-dessous sont des estimations indicatives (TND), à affiner selon le périmètre exact, le niveau de qualité attendu (tests, CI/CD, monitoring), les intégrations et la volumétrie. La complexité est exprimée en \textbf{S/M/L/XL}.
+
+\begin{longtable}{|p{4.2cm}|p{8.2cm}|p{1.6cm}|p{2.0cm}|}
+\hline
+\textbf{Fonctionnalité} & \textbf{Description} & \textbf{Complexité} & \textbf{Prix (TND)} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Fonctionnalité} & \textbf{Description} & \textbf{Complexité} & \textbf{Prix (TND)} \\
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
+
+Authentification web & Connexion/déconnexion, sessions, pages dédiées. & S & 800--1500 \\
+\hline
+Authentification API (tokens) & Jetons par appareil, gestion et révocation. & M & 1500--3000 \\
+\hline
+Réinitialisation mot de passe & Email de reset via token, validation et sécurité. & S & 800--1500 \\
+\hline
+Vérification d'email & Envoi et validation de lien de vérification (web/API). & S & 800--1500 \\
+\hline
+RBAC (rôles/permissions) & Gestion fine des droits, middleware, menus conditionnels. & L & 4000--8000 \\
+\hline
+Clonage de rôles & Dupliquer un rôle et ses permissions. & S & 600--1200 \\
+\hline
+Gestion multi-sites & Modèle City $\rightarrow$ Gym $\rightarrow$ Group et rattachements. & L & 5000--9000 \\
+\hline
+CRUD Villes & Création, édition, suppression, restauration/archives. & M & 1500--3500 \\
+\hline
+CRUD Salles & Gestion des salles, rattachement ville, paramètres. & M & 1500--3500 \\
+\hline
+CRUD Groupes & Groupes/niveaux, affectations individuelles et en masse. & M & 2000--4000 \\
+\hline
+CRUD Catégories & Catégories sportives/âge, initialisation via seed. & S & 800--1500 \\
+\hline
+Annuaire utilisateurs & Liste, recherche, filtres, CRUD complet. & L & 3500--7000 \\
+\hline
+Fiche membre & Profil détaillé (données, rattachements, historique). & L & 4000--8000 \\
+\hline
+Statut stage & Mise à jour du statut (AJAX) + filtrage des membres en stage. & M & 1500--3500 \\
+\hline
+Rapport membre & Synthèse mensuelle (paiements, présences, progrès) par membre. & L & 4000--8000 \\
+\hline
+Affectation membre $\rightarrow$ salle/groupe & Mouvements, validations, historique minimal. & M & 1500--3500 \\
+\hline
+Bannissement/débannissement & Statuts, restrictions et déconnexion forcée. & M & 1500--3000 \\
+\hline
+Gestion staff/managers & CRUD CityManager, GymManager, Staff, Modérateurs. & L & 4000--8000 \\
+\hline
+Gestion coachs & CRUD, fiche coach, rapport coach. & M & 2500--5000 \\
+\hline
+Rapport coach & Synthèse mensuelle (dépenses, présences, cours) par coach. & L & 4000--8000 \\
+\hline
+Cours (CRUD) & Création et gestion des cours (FR/EN), affectations. & M & 2000--4500 \\
+\hline
+Emplois du temps & Schedules, affichage, CRUD, cohérence horaire. & L & 3500--7000 \\
+\hline
+Séances d'entraînement & Planification de sessions, consultation, mise à jour. & L & 3500--7500 \\
+\hline
+Packs d'entraînement & Catalogue de packs, règles de consommation, CRUD. & L & 4000--8000 \\
+\hline
+Présence par séance & Marquage, historique, mise à jour AJAX. & M & 2000--4500 \\
+\hline
+Présence par cours & Feuille d'appel, statuts (present/absent/excused), stats. & L & 3500--7000 \\
+\hline
+Présence par catégorie & Saisie dédiée + statistiques par catégorie. & M & 2500--5000 \\
+\hline
+Grades / ceintures & Gestion des ceintures, historique et obtentions. & L & 4000--8000 \\
+\hline
+Grading (passages de grades) & Interface d'examen, saisies, validations. & L & 4500--9000 \\
+\hline
+Notes de grade & Catégories/sous-catégories/items et grilles de notes. & L & 4500--9000 \\
+\hline
+Tests athlétiques & Définition des tests, saisie des résultats, rapport. & L & 4000--8000 \\
+\hline
+Combats & Création d'oppositions, historique, affichages. & M & 2500--5000 \\
+\hline
+Événements (CRUD) & Création, inscriptions, gestion des statuts et frais. & L & 4500--9000 \\
+\hline
+Liste d'attente (waitlist) & Gestion des files d'attente et bascule automatique. & M & 2000--4500 \\
+\hline
+Marquage paiement événement & Marquer payé, confirmation, création de revenu associé. & M & 1500--3500 \\
+\hline
+Paiements membres (CRUD) & Saisie mensuelle, statut due/paid, méthode, notes. & L & 4500--9000 \\
+\hline
+Génération facture PDF & Invoice PDF sur paiement \texttt{paid} + numéro unique. & M & 2000--4500 \\
+\hline
+Dépenses (CRUD) & Saisie dépenses, filtres, justificatifs si activés. & L & 4000--8000 \\
+\hline
+Catégories de dépenses & CRUD catégories et sous-catégories. & M & 1500--3000 \\
+\hline
+Revenus & Ventilation par source (packs, événements, examens). & M & 2000--4500 \\
+\hline
+Reporting (tableau de bord) & KPIs, synthèse, top coachs/salles, filtres multi-critères. & XL & 9000--15000 \\
+\hline
+Export PDF (reporting) & Export PDF des rapports avec sections activables. & M & 2000--4500 \\
+\hline
+Export Excel (reporting) & Export Excel/XLSX via vue dédiée. & M & 2000--4500 \\
+\hline
+Export PDF présence événement & Feuille présence PDF avec support AR (glyphes). & M & 2000--4500 \\
+\hline
+Documents membre & Upload, suppression, téléchargement contrôlé (privé). & L & 4000--8000 \\
+\hline
+Logs d'activité & Journalisation actions (URL, IP, payload filtré) + UI. & L & 4000--8000 \\
+\hline
+Paramètres globaux & Settings (UI + persistance + application dans l'UI). & M & 2000--4500 \\
+\hline
+Accueil staff (welcome) & Page d'entrée staff avec raccourcis et accès rapide. & S & 800--1500 \\
+\hline
+Pages système & Page maintenance/vide et page non autorisée (\texttt{/unAuth}). & S & 800--1500 \\
+\hline
+Internationalisation FR/AR & Bascule LTR/RTL, dictionnaires, UI bilingue. & L & 4500--9000 \\
+\hline
+Mode sombre & Préférences persistées, styles adaptés. & M & 1500--3500 \\
+\hline
+Recherche globale (Spotlight) & Recherche multi-entités avec suggestions selon rôle. & L & 5000--9000 \\
+\hline
+DataTables serveur & Tables performantes (tri/filtre/pagination côté serveur). & L & 4000--8000 \\
+\hline
+PWA (manifest + SW) & Installation, cache offline basique, assets principaux. & M & 2500--5000 \\
+\hline
+Sécurité en-têtes HTTP & CSP, X-Frame-Options, nosniff, referrer policy, etc. & S & 800--1500 \\
+\hline
+Protection anti-bot (honeypot) & Champ piège + réponse contrôlée. & S & 600--1200 \\
+\hline
+Détection outils d'attaque & UA suspects + patterns SQLi/XSS + blocage JSON. & L & 4000--8000 \\
+\hline
+Blocage IP automatique & Blocage temporaire sur volume anormal/404 excessifs. & M & 2500--5000 \\
+\hline
+Rate limiting login & Limite tentatives, messages web/API. & S & 800--1500 \\
+\hline
+Sanitization entrées & Nettoyage récursif des entrées (XSS basique). & S & 800--1500 \\
+\hline
+Emails transactionnels & Bienvenue, vérification email, reset password. & M & 1500--3000 \\
+\hline
+Rappel inactivité & Commande planifiée: notifier utilisateurs inactifs. & M & 2000--4500 \\
+\hline
+Rappels paiement SMS & Commande planifiée, options \texttt{--days}/\texttt{--dry-run}. & L & 4000--8000 \\
+\hline
+Multi-fournisseur SMS & Twilio/Orange, sélection par configuration, fallback possible. & M & 2500--5000 \\
+\hline
+Planification (scheduler) & Mise en place cron/scheduler + supervision de base. & M & 1500--3500 \\
+\hline
+Stripe (achat pack) & Paiement en ligne, callbacks, historique achats. & XL & 9000--18000 \\
+\hline
+
+Optionnel -- Check-in QR code & QR par membre, scan mobile, marquage présence. & L & 6000--12000 \\
+\hline
+Optionnel -- Cartes membres & Carte PDF/print, numéro, badge, expiration. & M & 2500--6000 \\
+\hline
+Optionnel -- Notifications push & Push web/mobile (PWA), segmentation et logs. & XL & 12000--25000 \\
+\hline
+Optionnel -- Biometrie/RFID & Intégration matériel pointage + synchronisation. & XL & 20000--40000 \\
+\hline
+Optionnel -- Gestion stock/vente & Produits, inventaire, caisse (POS), facturation. & XL & 15000--35000 \\
+\hline
+Optionnel -- Comptabilité & Exports vers logiciel comptable, écritures, TVA. & XL & 15000--35000 \\
+\hline
+Optionnel -- CRM/marketing & Campagnes, segments, relances, leads, conversion. & XL & 15000--35000 \\
+\hline
+Optionnel -- Abonnements récurrents & Renouvellement auto, prélèvement, gestion d'échec. & XL & 15000--35000 \\
+\hline
+Optionnel -- Multi-devise & Devises, taux, arrondis, reporting multi-monnaie. & L & 8000--15000 \\
+\hline
+Optionnel -- Multi-langue étendue & Ajouter EN complet + gestion traduction backoffice. & L & 7000--14000 \\
+\hline
+Optionnel -- Sauvegardes automatiques & Backups DB + fichiers, rotation, stockage externe. & M & 3000--7000 \\
+\hline
+Optionnel -- Monitoring & Alerting erreurs, métriques, dashboards, SLO. & L & 7000--15000 \\
+\hline
+\end{longtable}
+
+\section{Données et entités principales}
+\begin{itemize}
+    \item \textbf{Organisation :} City, Gym, Group, Category.
+    \item \textbf{Pédagogie :} Course, Schedule, TrainingPackage, TrainingSession, Participation, Waitlist.
+    \item \textbf{Présences :} Attendance, CourseAttendance, CategoryAttendance.
+    \item \textbf{Sport :} Belt, BeltNoteCategory, BeltNoteItem, Combat, AthleteTest.
+    \item \textbf{Événements :} Event, EventRegistration.
+    \item \textbf{Finance :} UserPayment, Revenue, Expense, ExpenseCategory, ExpenseSubcategory.
+    \item \textbf{Documents :} UserDocument.
+    \item \textbf{Administration :} Setting, ActivityLog.
+\end{itemize}
+
+\end{document}
+ :=:;Si nbv Cx Cx       @       Je Je Je @@ @ Ajouter Ajouter 

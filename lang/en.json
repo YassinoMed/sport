@@ -1,0 +1,21 @@
+{
+    "The :attribute must contain at least one letter.": "The :attribute must contain at least one letter.",
+    "The :attribute must contain at least one number.": "The :attribute must contain at least one number.",
+    "The :attribute must contain at least one symbol.": "The :attribute must contain at least one symbol.",
+    "The :attribute must contain at least one uppercase and one lowercase letter.": "The :attribute must contain at least one uppercase and one lowercase letter.",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "The given :attribute has appeared in a data leak. Please choose a different :attribute.",
+    "Custom folders": "Custom folders",
+    "Scan files": "Scan files",
+    "Folder name": "Folder name",
+    "Files": "Files",
+    "Scan": "Scan",
+    "Scan result": "Scan result",
+    "Choose files then click Scan": "Choose files then click Scan",
+    "Saved folders": "Saved folders",
+    "Folder": "Folder",
+    "File": "File",
+    "Size": "Size",
+    "Action": "Action",
+    "ex: invoices, certificates": "ex: invoices, certificates",
+    "No data": "No data"
+}

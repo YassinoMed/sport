@@ -1,0 +1,1977 @@
+/* ============================================
+   DESIGN UPGRADE v3.0 — Tablet-First Responsive
+   Samsung Galaxy Tab S6 Lite optimized (10.4" 1200×2000)
+   CSS Pixels: ~800×1200 portrait / ~1200×800 landscape
+   
+   BREAKPOINTS:
+   - Mobile:  < 768px
+   - Tablet:  768px – 1024px  ← PRIORITY
+   - Desktop: > 1024px
+   ============================================ */
+
+/* ============================================
+   1. TYPOGRAPHY & BASE — Fluid & Modern
+   ============================================ */
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    /* Fluid font-size: 14px at 320px → 16px at 1200px */
+    font-size: clamp(0.875rem, 0.82rem + 0.25vw, 1rem);
+}
+
+body {
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    letter-spacing: -0.01em;
+    overflow-x: hidden;
+}
+
+/* Heading hierarchy — sharp & readable at arm's length */
+h1,
+.h1,
+.page-title {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+}
+
+h2,
+.h2,
+.header-title {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+}
+
+h3,
+.h3 {
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+}
+
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+}
+
+/* Readability: larger line-height for body content */
+p,
+.card-body,
+.table td,
+.form-control,
+.stat-label,
+.modern-table td,
+.table-modern td {
+    line-height: 1.65;
+}
+
+/* Better contrast for WCAG AA */
+.text-muted,
+.text-secondary {
+    color: #64748b !important;
+}
+
+/* ============================================
+   2. LAYOUT & SPACING — Tablet-Optimized
+   ============================================ */
+.content-wrapper {
+    padding: 0 !important;
+}
+
+/* -- MOBILE < 768px -- */
+@media (max-width: 767.98px) {
+    .content-wrapper>section.content-header {
+        padding: 1rem 1rem 0;
+    }
+
+    .content-wrapper>section.content {
+        padding: 0.75rem 1rem 1.5rem;
+    }
+}
+
+/* -- TABLET 768px – 1024px -- */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .content-wrapper>section.content-header {
+        padding: 1.5rem 2rem 0;
+    }
+
+    .content-wrapper>section.content {
+        padding: 1rem 2rem 2.5rem;
+    }
+
+    /* Give content full width — sidebar is collapsed on tablet */
+    .content-wrapper {
+        min-height: 100vh;
+    }
+}
+
+/* -- DESKTOP > 1024px -- */
+@media (min-width: 1025px) {
+    .content-wrapper>section.content-header {
+        padding: 1.5rem 2rem 0;
+    }
+
+    .content-wrapper>section.content {
+        padding: 1rem 2rem 2rem;
+    }
+}
+
+/* Max-width for very large screens */
+@media (min-width: 1400px) {
+    .content-wrapper .container-fluid {
+        max-width: 1320px;
+    }
+}
+
+/* ============================================
+   3. NAVBAR — Glass, Responsive
+   ============================================ */
+.main-header.navbar {
+    height: auto;
+    min-height: 60px;
+    padding: 0.5rem 1.25rem !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+body.dark-mode .main-header.navbar {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border-bottom-color: rgba(51, 65, 85, 0.8) !important;
+}
+
+.main-header .nav-link {
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 10px !important;
+    font-size: 0.875rem;
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.main-header .nav-link:hover {
+    background: rgba(99, 102, 241, 0.08) !important;
+}
+
+.main-header .nav-link:active {
+    transform: scale(0.95);
+}
+
+/* Mobile navbar */
+@media (max-width: 767.98px) {
+    .main-header.navbar {
+        padding: 0.375rem 0.75rem !important;
+    }
+
+    .main-header .nav-link {
+        padding: 0.375rem 0.5rem !important;
+        min-width: 40px;
+        min-height: 40px;
+    }
+}
+
+/* Tablet navbar — more room */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .main-header.navbar {
+        padding: 0.5rem 1.5rem !important;
+    }
+
+    .main-header .nav-link {
+        padding: 0.625rem 0.875rem !important;
+        min-width: 48px;
+        min-height: 48px;
+        font-size: 0.9375rem;
+    }
+}
+
+/* ============================================
+   4. DROPDOWN MENUS — Refined
+   ============================================ */
+.dropdown-menu {
+    border: none !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+    border-radius: 14px !important;
+    padding: 0.5rem !important;
+    animation: dropdownSlide 0.2s ease-out;
+    overflow: hidden;
+}
+
+@keyframes dropdownSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.dropdown-item {
+    border-radius: 8px !important;
+    padding: 0.625rem 1rem !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.15s ease !important;
+}
+
+.dropdown-item:hover {
+    background: rgba(99, 102, 241, 0.08) !important;
+    color: var(--primary, #6366f1) !important;
+    transform: translateX(2px);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background: rgba(99, 102, 241, 0.12) !important;
+    color: var(--primary, #6366f1) !important;
+}
+
+/* Tablet: larger dropdown items for finger tapping */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .dropdown-item {
+        padding: 0.75rem 1.125rem !important;
+        font-size: 0.9375rem;
+    }
+}
+
+/* ============================================
+   5. SIDEBAR — Touch & Responsive
+   ============================================ */
+.main-sidebar {
+    border-right: none !important;
+    will-change: transform;
+}
+
+.nav-sidebar .nav-link {
+    min-height: 48px;
+    /* Touch-friendly for tablet & mobile */
+    padding: 0.625rem 1rem !important;
+    gap: 0.75rem;
+}
+
+.nav-sidebar .nav-link p {
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nav-sidebar .nav-link.active {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(129, 140, 248, 0.15)) !important;
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.2) !important;
+    font-weight: 600;
+}
+
+.nav-treeview {
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+/* On tablet + mobile: sidebar is overlay */
+@media (max-width: 1024px) {
+    body.sidebar-open::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 1039;
+        animation: fadeIn 0.2s ease;
+    }
+
+    .main-sidebar {
+        box-shadow: 8px 0 30px rgba(0, 0, 0, 0.15) !important;
+    }
+}
+
+/* Tablet sidebar: larger touch targets */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .nav-sidebar .nav-link {
+        min-height: 52px;
+        padding: 0.75rem 1.125rem !important;
+        font-size: 0.9375rem;
+    }
+
+    .nav-sidebar .nav-icon {
+        font-size: 1.125rem;
+    }
+}
+
+/* ============================================
+   6. CARDS — Modern with Tablet spacing
+   ============================================ */
+.card,
+.modern-card,
+.card-modern {
+    border: 1px solid rgba(226, 232, 240, 0.7) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+    transition: box-shadow 0.3s ease, transform 0.3s ease !important;
+    overflow: hidden;
+}
+
+.card:hover,
+.modern-card:hover,
+.card-modern:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Don't shift table-containing cards */
+.card:has(.table):hover,
+.card:has(.dataTables_wrapper):hover,
+.modern-card:has(.modern-table):hover,
+.modern-card:has(.table-container):hover {
+    transform: translateY(0) !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .modern-card,
+body.dark-mode .card-modern {
+    border-color: rgba(51, 65, 85, 0.6) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header,
+.card-header-modern {
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
+    padding: 1.125rem 1.5rem !important;
+}
+
+body.dark-mode .card-header,
+body.dark-mode .card-header-modern {
+    border-bottom-color: rgba(51, 65, 85, 0.6) !important;
+}
+
+.card-body {
+    padding: 1.25rem 1.5rem !important;
+}
+
+/* Mobile cards: tighter */
+@media (max-width: 767.98px) {
+
+    .card,
+    .modern-card,
+    .card-modern {
+        border-radius: 14px !important;
+    }
+
+    .card-body {
+        padding: 1rem !important;
+    }
+
+    .card-header,
+    .card-header-modern {
+        padding: 0.875rem 1rem !important;
+    }
+}
+
+/* Tablet cards: generous spacing */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .card-body {
+        padding: 1.5rem 1.75rem !important;
+    }
+
+    .card-header,
+    .card-header-modern {
+        padding: 1.25rem 1.75rem !important;
+    }
+}
+
+/* ============================================
+   7. BUTTONS — 48px min touch targets
+   ============================================ */
+.btn,
+.btn-modern,
+.btn-primary-modern,
+.btn-success-modern,
+.btn-danger-modern,
+.btn-warning-modern {
+    min-height: 44px;
+    padding: 0.625rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: -0.005em;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn:hover,
+.btn-modern:hover {
+    transform: translateY(-1px) !important;
+}
+
+.btn:active,
+.btn-modern:active {
+    transform: translateY(0) scale(0.98) !important;
+}
+
+/* Remove ripple on tactile devices for performance */
+@media (max-width: 1024px) {
+    .btn::before {
+        display: none !important;
+    }
+}
+
+/* Mobile buttons: full-width stacked */
+@media (max-width: 767.98px) {
+    .header-actions {
+        width: 100%;
+    }
+
+    .header-actions>a,
+    .header-actions>button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-primary-modern,
+    .btn-success-modern,
+    .btn-danger-modern,
+    .btn-warning-modern {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Tablet buttons: larger, side-by-side */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .btn,
+    .btn-modern,
+    .btn-primary-modern,
+    .btn-success-modern,
+    .btn-danger-modern,
+    .btn-warning-modern {
+        min-height: 48px;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9375rem;
+    }
+
+    .btn-group .btn,
+    .header-actions .btn,
+    .header-actions .btn-primary-modern,
+    .header-actions .btn-success-modern {
+        min-height: 46px;
+    }
+
+    .btn-sm {
+        min-height: 40px;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .action-btn {
+        min-height: 40px;
+        min-width: 40px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Desktop buttons */
+@media (min-width: 1025px) {
+
+    .btn-group .btn,
+    .header-actions .btn,
+    .header-actions .btn-primary-modern {
+        min-height: 40px;
+    }
+
+    .btn-sm {
+        min-height: 34px;
+        padding: 0.375rem 0.875rem;
+        font-size: 0.8125rem;
+        border-radius: 8px;
+    }
+
+    .action-btn {
+        min-height: 36px;
+        min-width: 36px;
+    }
+}
+
+/* ============================================
+   8. FORM CONTROLS — All breakpoints
+   ============================================ */
+.form-control,
+.form-select,
+.custom-select,
+.form-control-modern,
+.form-select-modern,
+.form-input-modern,
+.form-textarea-modern {
+    min-height: 44px;
+    border-radius: 10px !important;
+    border: 1.5px solid var(--gray-200, #e5e7eb) !important;
+    font-size: 0.9375rem;
+    padding: 0.625rem 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
+    background-color: white;
+}
+
+.form-control:hover,
+.form-select:hover,
+.form-control-modern:hover {
+    border-color: var(--gray-300, #d1d5db) !important;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-control-modern:focus,
+.form-select-modern:focus {
+    border-color: var(--primary, #6366f1) !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12) !important;
+    outline: none !important;
+}
+
+/* Tablet forms: larger text, extra padding */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .form-control,
+    .form-select,
+    .form-control-modern,
+    .form-select-modern,
+    .form-textarea-modern {
+        min-height: 48px;
+        padding: 0.75rem 1.125rem;
+        font-size: 1rem;
+    }
+
+    .form-label,
+    .form-label-modern,
+    .label-modern {
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Dark mode forms */
+body.dark-mode .form-control,
+body.dark-mode .form-select,
+body.dark-mode .form-control-modern {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+    border-color: var(--primary, #6366f1) !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+}
+
+/* Textarea */
+textarea.form-control,
+textarea.form-control-modern,
+.form-textarea-modern {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Form labels */
+.form-label,
+.form-label-modern,
+.label-modern {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--gray-700, #374151);
+    margin-bottom: 0.375rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+body.dark-mode .form-label,
+body.dark-mode .form-label-modern {
+    color: #cbd5e1;
+}
+
+.form-group,
+.form-group-modern {
+    margin-bottom: 1.25rem;
+}
+
+/* ============================================
+   9. TABLES — Responsive all breakpoints
+   ============================================ */
+.table,
+.modern-table,
+.table-modern {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+.table thead th,
+.modern-table thead th,
+.table-modern thead th {
+    background: var(--gray-50, #f9fafb) !important;
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--gray-500, #6b7280) !important;
+    padding: 0.875rem 1.25rem !important;
+    white-space: nowrap;
+    border-bottom: 2px solid var(--gray-200, #e5e7eb) !important;
+}
+
+.table tbody td,
+.modern-table tbody td,
+.table-modern tbody td {
+    padding: 0.875rem 1.25rem !important;
+    font-size: 0.875rem;
+    color: var(--gray-700, #374151);
+    border-bottom: 1px solid var(--gray-100, #f3f4f6) !important;
+    vertical-align: middle !important;
+}
+
+.table tbody tr,
+.modern-table tbody tr,
+.table-modern tbody tr {
+    transition: background-color 0.15s ease !important;
+}
+
+.table tbody tr:hover,
+.modern-table tbody tr:hover,
+.table-modern tbody tr:hover {
+    background-color: rgba(99, 102, 241, 0.03) !important;
+}
+
+/* No jarring transforms on table rows */
+.table tbody tr:hover {
+    transform: none !important;
+}
+
+/* Table containers */
+.table-responsive,
+.table-container {
+    border-radius: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Dark mode tables */
+body.dark-mode .table thead th,
+body.dark-mode .modern-table thead th {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+    border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .table tbody td,
+body.dark-mode .modern-table tbody td {
+    color: #cbd5e1;
+    border-bottom-color: #1e293b !important;
+}
+
+body.dark-mode .table tbody tr:hover,
+body.dark-mode .modern-table tbody tr:hover {
+    background-color: rgba(99, 102, 241, 0.06) !important;
+}
+
+/* -- MOBILE TABLE → Card layout -- */
+@media (max-width: 767.98px) {
+
+    .table thead th,
+    .modern-table thead th {
+        padding: 0.625rem 0.75rem !important;
+        font-size: 0.625rem !important;
+    }
+
+    .table tbody td,
+    .modern-table tbody td {
+        padding: 0.625rem 0.75rem !important;
+        font-size: 0.8125rem;
+    }
+}
+
+/* -- TABLET TABLE → Comfortable padding, all columns shown -- */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .table thead th,
+    .modern-table thead th,
+    .table-modern thead th {
+        padding: 1rem 1rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    .table tbody td,
+    .modern-table tbody td,
+    .table-modern tbody td {
+        padding: 1rem 1rem !important;
+        font-size: 0.9375rem;
+    }
+
+    /* Slightly larger action buttons for touch */
+    .actions-cell {
+        gap: 0.5rem;
+    }
+
+    .actions-cell .action-btn {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* ============================================
+   10. STAT CARDS — Grid per breakpoint
+   ============================================ */
+.stats-grid {
+    display: grid !important;
+    gap: 1rem !important;
+}
+
+.stat-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.04;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover::after {
+    transform: scale(1.5);
+}
+
+/* Mobile: 2 columns */
+@media (max-width: 767.98px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem !important;
+    }
+
+    .stat-card {
+        padding: 1rem !important;
+    }
+
+    .stat-value {
+        font-size: 1.25rem !important;
+    }
+
+    .stat-label {
+        font-size: 0.75rem !important;
+    }
+
+    .stat-icon {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .stat-icon svg,
+    .stat-icon i {
+        font-size: 1rem !important;
+    }
+}
+
+/* Tablet: auto-fit with wider min, full 2+ columns always */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+        gap: 1.125rem !important;
+    }
+
+    .stat-card {
+        padding: 1.375rem !important;
+        border-radius: 14px !important;
+    }
+
+    .stat-value {
+        font-size: 1.625rem !important;
+    }
+
+    .stat-label {
+        font-size: 0.875rem !important;
+    }
+
+    .stat-icon {
+        width: 52px !important;
+        height: 52px !important;
+        border-radius: 12px;
+    }
+}
+
+/* Desktop: nice auto-fit across full width */
+@media (min-width: 1025px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+    }
+}
+
+/* ============================================
+   11. PAGE HEADER — Responsive composition
+   ============================================ */
+
+/* Mobile: stack vertically */
+@media (max-width: 767.98px) {
+
+    .content-header .d-flex.justify-content-between,
+    .content-header .d-flex.flex-wrap.justify-content-between {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        align-items: flex-start !important;
+    }
+
+    .page-title {
+        font-size: 1.375rem !important;
+    }
+
+    .page-title svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .header-actions {
+        width: 100%;
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .header-actions>* {
+        flex: 1;
+    }
+}
+
+/* Tablet: side-by-side, title readable at arm's length */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-title {
+        font-size: 1.625rem !important;
+    }
+
+    .page-title svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    .page-subtitle {
+        font-size: 0.9375rem;
+        margin-top: 0.375rem;
+    }
+
+    .breadcrumb {
+        font-size: 0.875rem;
+        gap: 0.375rem;
+    }
+
+    .header-actions {
+        gap: 0.75rem;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1025px) {
+    .page-title {
+        font-size: 1.75rem !important;
+    }
+}
+
+/* ============================================
+   12. FILTER CARD — Tablet 2-column layout
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .filter-body {
+        padding: 1.5rem 1.75rem;
+    }
+
+    .filter-body .row {
+        gap: 0 !important;
+    }
+
+    .filter-body .col-md-6,
+    .filter-body .col-md-5,
+    .filter-body .col-md-4,
+    .filter-body .col-md-3 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+
+    .filter-body .col-lg-3 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+
+    .filter-header {
+        padding: 1.125rem 1.75rem;
+    }
+}
+
+/* ============================================
+   13. FORM GRID — Responsive columns
+   ============================================ */
+/* Mobile: single column */
+@media (max-width: 767.98px) {
+    .form-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    .gender-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .row.g-3>[class*="col-md-"],
+    .row.g-3>[class*="col-lg-"] {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Tablet: 2 columns for most form rows */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.25rem !important;
+    }
+
+    .gender-container {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 1rem;
+    }
+}
+
+/* ============================================
+   14. STATUS GRID (Payment page)
+   ============================================ */
+@media (max-width: 767.98px) {
+    .status-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .status-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+        gap: 0.875rem !important;
+    }
+
+    .status-item {
+        padding: 1rem 0.875rem !important;
+    }
+
+    .status-item .month {
+        font-size: 0.9375rem;
+    }
+}
+
+/* ============================================
+   15. MODALS — Tablet sized
+   ============================================ */
+.modal-content {
+    border: none !important;
+    border-radius: 20px !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.05) !important;
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 1.25rem 1.5rem !important;
+    border-bottom: 1px solid var(--gray-100, #f3f4f6) !important;
+}
+
+.modal-body {
+    padding: 1.5rem !important;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem !important;
+    border-top: 1px solid var(--gray-100, #f3f4f6) !important;
+    background: var(--gray-50, #f9fafb) !important;
+}
+
+body.dark-mode .modal-content {
+    background: #1e293b !important;
+}
+
+body.dark-mode .modal-header {
+    border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .modal-footer {
+    border-top-color: #334155 !important;
+    background: #0f172a !important;
+}
+
+.modal.fade .modal-dialog {
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1) translateY(0);
+}
+
+@media (max-width: 767.98px) {
+    .modal-dialog {
+        margin: 0.5rem !important;
+    }
+
+    .modal-content {
+        border-radius: 16px !important;
+    }
+}
+
+/* Tablet modal: center and size well */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .modal-dialog {
+        max-width: 560px;
+        margin: 2rem auto !important;
+    }
+
+    .modal-body {
+        padding: 2rem !important;
+    }
+
+    /* Custom modals */
+    .modal-modern {
+        max-width: 440px;
+        padding: 2.5rem !important;
+    }
+
+    .modal-actions {
+        gap: 1rem;
+    }
+
+    .modal-actions .btn,
+    .modal-actions .btn-ghost,
+    .modal-actions .btn-danger-modern {
+        min-height: 48px;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9375rem;
+    }
+}
+
+/* ============================================
+   16. BADGES — Refined
+   ============================================ */
+.badge,
+.badge-modern {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+}
+
+.badge-soft-info {
+    background: rgba(6, 182, 212, 0.1);
+    color: #0891b2;
+    border: 1px solid rgba(6, 182, 212, 0.15);
+}
+
+.badge-soft-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.badge-soft-warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+.badge-soft-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.badge-soft-primary {
+    background: rgba(99, 102, 241, 0.1);
+    color: #4f46e5;
+    border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+/* Tablet badges: slightly bigger for readability */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .badge,
+    .badge-modern {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================
+   17. ALERTS
+   ============================================ */
+.alert,
+.alert-modern,
+.modern-alert {
+    border-radius: 12px !important;
+    padding: 1rem 1.25rem !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    animation: alertSlideIn 0.3s ease-out;
+}
+
+@keyframes alertSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .alert,
+    .alert-modern {
+        padding: 1.125rem 1.5rem !important;
+        font-size: 0.9375rem;
+    }
+}
+
+/* ============================================
+   18. PAGINATION
+   ============================================ */
+.pagination {
+    gap: 0.25rem;
+}
+
+.page-link {
+    min-width: 38px;
+    height: 38px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid var(--gray-200, #e5e7eb) !important;
+    color: var(--gray-600, #4b5563) !important;
+    transition: all 0.15s ease !important;
+    padding: 0 0.5rem !important;
+}
+
+.page-link:hover {
+    background: var(--gray-100, #f3f4f6) !important;
+    border-color: var(--gray-300, #d1d5db) !important;
+    color: var(--primary, #6366f1) !important;
+}
+
+.page-item.active .page-link {
+    background: var(--primary, #6366f1) !important;
+    border-color: var(--primary, #6366f1) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* Tablet pagination: bigger touch targets */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-link {
+        min-width: 42px;
+        height: 42px;
+        font-size: 0.9375rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .page-link {
+        min-width: 34px;
+        height: 34px;
+        font-size: 0.8125rem;
+        border-radius: 8px !important;
+    }
+}
+
+/* DataTables pagination */
+.dataTables_paginate .paginate_button {
+    min-width: 36px !important;
+    height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+    margin: 0 2px !important;
+    font-size: 0.8125rem !important;
+    padding: 0 !important;
+    border: 1px solid var(--gray-200, #e5e7eb) !important;
+    transition: all 0.15s ease !important;
+}
+
+.dataTables_paginate .paginate_button.current {
+    background: var(--primary, #6366f1) !important;
+    border-color: var(--primary, #6366f1) !important;
+    color: white !important;
+}
+
+/* ============================================
+   19. BREADCRUMB
+   ============================================ */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 0.8125rem;
+}
+
+.breadcrumb-item a {
+    color: var(--gray-500, #6b7280);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary, #6366f1);
+}
+
+.breadcrumb-item.active {
+    color: var(--gray-900, #111827);
+    font-weight: 600;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    color: var(--gray-300, #d1d5db);
+}
+
+/* ============================================
+   20. FOOTER
+   ============================================ */
+.main-footer {
+    background: white !important;
+    border-top: 1px solid var(--gray-100, #f3f4f6) !important;
+    padding: 0.875rem 1.5rem !important;
+    font-size: 0.8125rem;
+    color: var(--gray-500, #6b7280);
+}
+
+body.dark-mode .main-footer {
+    background: #1e293b !important;
+    border-top-color: #334155 !important;
+    color: #94a3b8;
+}
+
+@media (max-width: 767.98px) {
+    .main-footer {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.75rem;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.25rem;
+    }
+}
+
+/* ============================================
+   21. QUICK ACTIONS FAB
+   ============================================ */
+@media (max-width: 767.98px) {
+    .quick-actions-container {
+        bottom: 20px !important;
+        right: 16px !important;
+    }
+
+    .fab-main {
+        width: 52px !important;
+        height: 52px !important;
+        border-radius: 16px !important;
+        font-size: 1.25rem !important;
+    }
+
+    .quick-action-btn {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .quick-action-label {
+        font-size: 0.75rem !important;
+        padding: 4px 10px !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .quick-actions-container {
+        bottom: 28px !important;
+        right: 24px !important;
+    }
+
+    .fab-main {
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 18px !important;
+        font-size: 1.375rem !important;
+    }
+
+    .quick-action-btn {
+        width: 48px !important;
+        height: 48px !important;
+    }
+
+    .quick-action-label {
+        font-size: 0.8125rem !important;
+    }
+}
+
+/* ============================================
+   22. ANIMATIONS — Subtle
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+.content-wrapper section.content {
+    animation: contentFadeIn 0.35s ease-out forwards;
+}
+
+@keyframes contentFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.stats-grid .stat-card {
+    opacity: 0;
+    animation: cardAppear 0.4s ease-out forwards;
+}
+
+.stats-grid .stat-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.stats-grid .stat-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.stats-grid .stat-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.stats-grid .stat-card:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.stats-grid .stat-card:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.stats-grid .stat-card:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ============================================
+   23. ACCESSIBILITY
+   ============================================ */
+:focus-visible {
+    outline: 2px solid var(--primary, #6366f1) !important;
+    outline-offset: 2px !important;
+    border-radius: 4px;
+}
+
+a,
+button,
+[role="button"],
+input[type="submit"] {
+    cursor: pointer;
+}
+
+/* ============================================
+   24. DARK MODE — Polished
+   ============================================ */
+body.dark-mode {
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .content-wrapper {
+    background: #0f172a !important;
+}
+
+body.dark-mode p,
+body.dark-mode .card-body,
+body.dark-mode small,
+body.dark-mode .text-muted {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode .page-title,
+body.dark-mode .header-title {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .main-sidebar {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
+}
+
+/* Dark scrollbar */
+body.dark-mode ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+body.dark-mode .dropdown-menu {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .dropdown-item {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .dropdown-item:hover {
+    background: rgba(99, 102, 241, 0.12) !important;
+    color: #a5b4fc !important;
+}
+
+body.dark-mode .avatar-simple {
+    background: rgba(99, 102, 241, 0.15) !important;
+    color: #a5b4fc !important;
+}
+
+/* ============================================
+   25. SELECT2 — Tablet optimized
+   ============================================ */
+.select2-container--bootstrap4 .select2-selection--single {
+    min-height: 44px !important;
+    border-radius: 10px !important;
+    border: 1.5px solid var(--gray-200, #e5e7eb) !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+.select2-container--bootstrap4 .select2-selection--single:focus,
+.select2-container--bootstrap4.select2-container--focus .select2-selection--single {
+    border-color: var(--primary, #6366f1) !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12) !important;
+}
+
+.select2-dropdown {
+    border-radius: 12px !important;
+    border: none !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important;
+    overflow: hidden;
+}
+
+.select2-results__option {
+    padding: 0.625rem 1rem !important;
+    font-size: 0.875rem;
+    transition: background 0.15s ease;
+}
+
+.select2-results__option--highlighted {
+    background: rgba(99, 102, 241, 0.08) !important;
+    color: var(--primary, #6366f1) !important;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .select2-container--bootstrap4 .select2-selection--single {
+        min-height: 48px !important;
+        padding: 0.625rem 1rem !important;
+    }
+
+    .select2-results__option {
+        padding: 0.75rem 1.125rem !important;
+        font-size: 0.9375rem;
+    }
+}
+
+/* ============================================
+   26. SCROLL PROGRESS & BACK TO TOP
+   ============================================ */
+.scroll-progress-bar {
+    height: 2px !important;
+    background: linear-gradient(90deg, #6366f1, #a78bfa) !important;
+}
+
+.back-to-top {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 12px !important;
+}
+
+@media (max-width: 767.98px) {
+    .back-to-top {
+        width: 38px !important;
+        height: 38px !important;
+        bottom: 80px !important;
+        right: 16px !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .back-to-top {
+        width: 46px !important;
+        height: 46px !important;
+        border-radius: 14px !important;
+        bottom: 96px !important;
+        right: 24px !important;
+    }
+}
+
+/* ============================================
+   27. GLOBAL SEARCH — Tablet
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .global-search-overlay {
+        padding: 8vh 2rem 1rem !important;
+    }
+
+    .global-search-modal {
+        max-width: 600px;
+    }
+
+    .global-search-input {
+        min-height: 52px !important;
+        font-size: 1.0625rem !important;
+    }
+
+    .global-search-item {
+        padding: 1rem !important;
+        gap: 1rem;
+    }
+
+    .global-search-title {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .global-search-overlay {
+        padding: 4vh 0.75rem 1rem !important;
+    }
+
+    .global-search-modal {
+        border-radius: 16px !important;
+    }
+}
+
+/* ============================================
+   28. UTILITY CLASSES
+   ============================================ */
+.avatar-simple {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.bg-light-primary {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.text-dark-modern {
+    color: var(--gray-900, #111827);
+}
+
+body.dark-mode .text-dark-modern {
+    color: #e2e8f0;
+}
+
+.breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--gray-500, #6b7280);
+    text-decoration: none;
+    font-size: 0.8125rem;
+    transition: color 0.15s ease;
+}
+
+.breadcrumb-link:hover {
+    color: var(--primary, #6366f1);
+}
+
+.card-footer {
+    border-top: 1px solid var(--gray-100, #f3f4f6) !important;
+    background: var(--gray-50, #f9fafb) !important;
+}
+
+body.dark-mode .card-footer {
+    background: #0f172a !important;
+    border-top-color: #334155 !important;
+}
+
+/* Preloader */
+.premium-preloader {
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s !important;
+}
+
+/* Skeleton loader */
+.skeleton {
+    background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 30%, #f3f4f6 60%, #f3f4f6 100%) !important;
+    background-size: 300% 100%;
+    animation: shimmer 1.8s ease-in-out infinite !important;
+    border-radius: 8px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+body.dark-mode .skeleton {
+    background: linear-gradient(90deg, #1e293b 0%, #334155 30%, #1e293b 60%) !important;
+    background-size: 300% 100%;
+}
+
+/* SweetAlert2 matching */
+.swal2-popup {
+    border-radius: 20px !important;
+    font-family: inherit !important;
+}
+
+.swal2-confirm {
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    padding: 0.625rem 1.5rem !important;
+    min-height: 44px;
+}
+
+.swal2-cancel {
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    padding: 0.625rem 1.5rem !important;
+    min-height: 44px;
+}
+
+body.dark-mode .swal2-popup {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .swal2-title {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .swal2-html-container {
+    color: #94a3b8 !important;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .swal2-confirm,
+    .swal2-cancel {
+        min-height: 48px;
+        padding: 0.75rem 1.75rem !important;
+        font-size: 0.9375rem;
+    }
+}
+
+/* DataTables on tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .dataTables_wrapper {
+        font-size: 0.9375rem;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        min-height: 42px;
+        border-radius: 10px !important;
+        padding: 0.5rem 2.25rem 0.5rem 0.875rem;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        min-height: 44px !important;
+        border-radius: 10px !important;
+        padding: 0.625rem 1.125rem !important;
+        font-size: 0.9375rem !important;
+    }
+}
+
+/* ============================================
+   29. TABLET LANDSCAPE SPECIFIC (min-height check)
+   Samsung Tab S6 Lite landscape: ~1200×800 CSS px
+   ============================================ */
+@media (min-width: 1025px) and (max-height: 850px) and (pointer: coarse) {
+
+    /* This catches tablet landscape mode (wide but short + touch) */
+    .nav-sidebar .nav-link {
+        min-height: 48px;
+        padding: 0.625rem 1rem !important;
+    }
+
+    .stat-card {
+        padding: 1.125rem !important;
+    }
+
+    .card-body {
+        padding: 1.25rem 1.5rem !important;
+    }
+
+    .btn,
+    .btn-primary-modern,
+    .btn-success-modern {
+        min-height: 46px;
+    }
+
+    .form-control,
+    .form-select,
+    .form-control-modern {
+        min-height: 46px;
+    }
+
+    .action-btn {
+        width: 40px;
+        height: 40px;
+        min-height: 40px;
+        min-width: 40px;
+    }
+
+    .page-link {
+        min-width: 40px;
+        height: 40px;
+    }
+
+    /* Keep tables readable */
+    .table tbody td,
+    .modern-table tbody td {
+        padding: 0.875rem 1rem !important;
+    }
+}
+
+/* ============================================
+   30. TABLET PORTRAIT SPECIFIC
+   Samsung Tab S6 Lite portrait: ~800×1200 CSS px
+   ============================================ */
+@media (min-width: 768px) and (max-width: 900px) and (orientation: portrait) {
+
+    /* Narrower portrait on tablet — ensure 2 columns only if enough space */
+    .stats-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .filter-body .col-md-6,
+    .filter-body .col-lg-3 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+}
+
+/* ============================================
+   31. PRINT STYLES
+   ============================================ */
+@media print {
+
+    .main-sidebar,
+    .main-header,
+    .main-footer,
+    .quick-actions-container,
+    .back-to-top,
+    .scroll-progress-container,
+    .premium-preloader,
+    .fab-main,
+    .global-search-overlay {
+        display: none !important;
+    }
+
+    .content-wrapper {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        animation: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+    }
+
+    body {
+        font-size: 12pt;
+        color: #000 !important;
+        background: white !important;
+    }
+}
+
+/* ============================================
+   32. USER DROPDOWN
+   ============================================ */
+.dropdown.user.user-menu .dropdown-menu {
+    border-radius: 16px !important;
+    min-width: 240px;
+}
+
+.dropdown.user.user-menu .img-circle {
+    width: 34px;
+    height: 34px;
+    border: 2px solid rgba(99, 102, 241, 0.3);
+    transition: border-color 0.2s ease;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .dropdown.user.user-menu .img-circle {
+        width: 38px;
+        height: 38px;
+    }
+
+    .dropdown.user.user-menu .dropdown-menu {
+        min-width: 280px;
+    }
+}
+
+/* ============================================
+   33. TABLE-MODERN CLASS (generic)
+   ============================================ */
+.table-modern {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-modern thead th {
+    background: var(--gray-50, #f9fafb);
+    padding: 0.875rem 1.25rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--gray-600, #4b5563);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid var(--gray-200, #e5e7eb);
+    text-align: left;
+}
+
+.table-modern tbody td {
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--gray-100, #f3f4f6);
+    vertical-align: middle;
+    font-size: 0.875rem;
+    color: var(--gray-700, #374151);
+}
+
+.table-modern tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.table-modern tbody tr:hover {
+    background: rgba(99, 102, 241, 0.03);
+}
+
+.table-modern tbody tr:last-child td {
+    border-bottom: none;
+}
+
+body.dark-mode .table-modern thead th {
+    background: #1e293b;
+    color: #94a3b8;
+    border-bottom-color: #334155;
+}
+
+body.dark-mode .table-modern tbody td {
+    color: #cbd5e1;
+    border-bottom-color: #1e293b;
+}
+
+/* ============================================
+   34. MOBILE TABLE → CARD VIEW (global)
+   Applied when pages use data-label attributes
+   ============================================ */
+@media (max-width: 767.98px) {
+
+    /* Only convert tables that have data-label on td elements */
+    .modern-table td[data-label]::before,
+    .table-modern td[data-label]::before {
+        content: attr(data-label);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.6875rem;
+        color: var(--gray-500, #6b7280);
+        letter-spacing: 0.05em;
+        margin-right: 1rem;
+        text-align: left;
+        flex-shrink: 0;
+    }
+}

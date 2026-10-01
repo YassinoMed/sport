@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym System - Style Showcase</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #667eea;
+            --primary-dark: #5a67d8;
+            --primary-light: #7c8ff0;
+            --success-color: #48bb78;
+            --warning-color: #ed8936;
+            --danger-color: #f56565;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f7fafc;
+            color: var(--text-primary);
+            padding: 2rem 0;
+        }
+
+        .showcase-header {
+            text-align: center;
+            padding: 3rem 0;
+            background: var(--primary-gradient);
+            color: white;
+            margin-bottom: 3rem;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .showcase-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .showcase-header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 3rem 0 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 2px solid var(--border-color);
+            font-weight: 700;
+            padding: 1.25rem;
+        }
+
+        .card-header.gradient-primary {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.625rem 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border: none;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+            border: none;
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(237, 137, 54, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+            border: none;
+            box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 101, 101, 0.4);
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), transparent);
+            border-radius: 0 0 0 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card .stat-icon.primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .stat-card .stat-icon.success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+
+        .stat-card .stat-icon.warning {
+            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+            color: white;
+        }
+
+        .stat-card .stat-icon.danger {
+            background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+            color: white;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .stat-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.625rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .badge-primary {
+            background: var(--primary-gradient);
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+
+        .badge-warning {
+            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+        }
+
+        .badge-danger {
+            background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+        }
+
+        /* Table */
+        .table thead th {
+            background: #f7fafc;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            border: none;
+            padding: 1rem;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background: #f7fafc;
+            transform: scale(1.005);
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Alerts */
+        .alert {
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(56, 161, 105, 0.05) 100%);
+            border-left-color: var(--success-color);
+            color: #2f855a;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, rgba(66, 153, 225, 0.1) 0%, rgba(49, 130, 206, 0.05) 100%);
+            border-left-color: #4299e1;
+            color: #2c5282;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, rgba(237, 137, 54, 0.1) 0%, rgba(221, 107, 32, 0.05) 100%);
+            border-left-color: var(--warning-color);
+            color: #c05621;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(245, 101, 101, 0.1) 0%, rgba(229, 62, 62, 0.05) 100%);
+            border-left-color: var(--danger-color);
+            color: #c53030;
+        }
+    </style>
+</head>
+<body>
+    <div class="showcase-header">
+        <div class="container">
+            <h1><i class="fas fa-dumbbell me-3"></i>Gym System</h1>
+            <p>Style Showcase - Design Premium & Moderne</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Stats Cards Section -->
+        <h2 class="section-title">Cartes de Statistiques</h2>
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="stat-value">1,234</h3>
+                    <p class="stat-label">Membres Actifs</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="stat-value">12,456 DH</h3>
+                    <p class="stat-label">Revenus du Mois</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="stat-value">89</h3>
+                    <p class="stat-label">Séances Aujourd'hui</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon danger">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="stat-value">23</h3>
+                    <p class="stat-label">Notifications</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons Section -->
+        <h2 class="section-title">Boutons</h2>
+        <div class="row mb-5">
+            <div class="col-12">
+                <button class="btn btn-primary me-2 mb-2">
+                    <i class="fas fa-plus me-2"></i>Ajouter
+                </button>
+                <button class="btn btn-success me-2 mb-2">
+                    <i class="fas fa-check me-2"></i>Confirmer
+                </button>
+                <button class="btn btn-warning me-2 mb-2">
+                    <i class="fas fa-edit me-2"></i>Modifier
+                </button>
+                <button class="btn btn-danger me-2 mb-2">
+                    <i class="fas fa-trash me-2"></i>Supprimer
+                </button>
+            </div>
+        </div>
+
+        <!-- Cards Section -->
+        <h2 class="section-title">Cartes</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-users me-2"></i>Carte Standard
+                    </div>
+                    <div class="card-body">
+                        <p>Voici un exemple de carte avec un design moderne et épuré.</p>
+                        <button class="btn btn-primary btn-sm">Action</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header gradient-primary">
+                        <i class="fas fa-star me-2"></i>Carte avec Gradient
+                    </div>
+                    <div class="card-body">
+                        <p>Une carte avec un en-tête gradient pour un look premium.</p>
+                        <button class="btn btn-success btn-sm">Action</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <h2 class="section-title">Formulaires</h2>
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Nom Complet</label>
+                            <input type="text" class="form-control" placeholder="Entrez votre nom">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="votre@email.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Catégorie</label>
+                            <select class="form-select">
+                                <option>Choisir une catégorie</option>
+                                <option>Fitness</option>
+                                <option>Musculation</option>
+                                <option>Yoga</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary w-100">Soumettre</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Badges & Alerts -->
+                <div class="card">
+                    <div class="card-header">
+                        Badges & Alertes
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <span class="badge badge-primary me-2">Primary</span>
+                            <span class="badge badge-success me-2">Success</span>
+                            <span class="badge badge-warning me-2">Warning</span>
+                            <span class="badge badge-danger me-2">Danger</span>
+                        </div>
+                        <div class="alert alert-success mb-2">
+                            <i class="fas fa-check-circle me-2"></i>Opération réussie !
+                        </div>
+                        <div class="alert alert-warning mb-2">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Attention requise
+                        </div>
+                        <div class="alert alert-danger mb-0">
+                            <i class="fas fa-times-circle me-2"></i>Une erreur s'est produite
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <h2 class="section-title">Tableaux</h2>
+        <div class="card mb-5">
+            <div class="card-header">
+                <i class="fas fa-table me-2"></i>Liste des Membres
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Ahmed Bennani</strong></td>
+                            <td>ahmed@example.com</td>
+                            <td><span class="badge badge-success">Actif</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sara Alami</strong></td>
+                            <td>sara@example.com</td>
+                            <td><span class="badge badge-warning">En attente</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mohamed Tahiri</strong></td>
+                            <td>mohamed@example.com</td>
+                            <td><span class="badge badge-success">Actif</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-4 mt-5">
+        <p class="text-muted">© 2025 <span style="background: var(--primary-gradient); padding: 0.25rem 0.75rem; border-radius: 6px; color: white; font-weight: 600;">MouradBenYahya</span> - Tous droits réservés</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
